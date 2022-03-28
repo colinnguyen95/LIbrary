@@ -1,35 +1,40 @@
 const booksContainer = document.querySelector('.library-container');
-const form = document.querySelector('.popupForm-container');
+const formContainer = document.querySelector('.popupForm-container');
+const form = document.querySelector('.popupForm');
 
 let myLibrary = [
     {
         title: "The Hobbit",
         author: "J.R.R. Tolkien",
         numPages: 295,
-        read: true
+        readStatus: 'yes'
     },
     {
         title: "The Hobbit 2",
         author: "J.R.R. Tolkien",
         numPages: 395,
-        read: true
+        readStatus: 'yes'
     },
     {
         title: "The Hobbit 3",
         author: "J.R.R. Tolkien",
         numPages: 495,
-        read: false
+        readStatus: 'no'
     }
 ];
 
-function Book(title, author, numPages, read){
+function Book(title, author, numPages, readStatus){
     this.title = title;
     this.author = author;
     this.numPages = numPages;
-    this.read = read;
+    this.readStatus = readStatus;
     this.info = function(){
-        let text = `${title} by ${author}, ${numPages} pages, ${read} yet.`;
-        // console.log(text);
+        let text = `<p>${title}</p> 
+                    <p>by ${author},</p>
+                    <p>${numPages} pages.</p>
+                    <p>Read Status: ${readStatus}</p>`;
+        console.log(text);
+        // let text = 'meep';
         return text;
     }
 }
@@ -38,31 +43,83 @@ function addBookToLibrary(){
     const title = document.querySelector('#title').value;
     const author = document.querySelector('#author').value;
     const numPages = document.querySelector('#numPages').value;
-    const read = document.querySelector('input[name="read_status"]:checked').value;
-    const newBook = new Book(title, author, numPages, read);
+    const readStatus = document.querySelector('input[name="read_status"]:checked').value;
+    const newBook = new Book(title, author, numPages, readStatus);
     myLibrary.push(newBook);
-    // console.log(newBook);
     loopBooks();
     closeForm();
+    form.reset();
+}
+
+function removeBook(book) {
+    const index = myLibrary.indexOf(book)
+    // console.log('remove book index: ', index);
+    if(index > -1){
+        myLibrary.splice(index, 1); //2nd paramter removes on item only
+    }
+    loopBooks();
+}
+
+function toggleReadStatus(e, book) {
+    book.readStatus = book.readStatus === 'yes' ? 'no' : 'yes';
+    loopBooks();
+    console.log(e);
+    console.log('toggle toggle');
 }
 
 function loopBooks(){
     booksContainer.textContent = '';
     return myLibrary.map(book => {
-        const books = document.createElement('p');
-        books.textContent = `${book.title} by ${book.author}, ${book.numPages} pages, ${book.read} yet.`
+        const books = document.createElement('div');
+        const h2 = document.createElement('h2');
+        h2.textContent = book.title;
+        const author = document.createElement('p');
+        author.textContent = `by ${book.author}`;
+        const numPages = document.createElement('p');
+        numPages.textContent = `${book.numPages} pages`;
+        const readStatus = document.createElement('p');
+        readStatus.textContent = `Read Status: `;
+
+        books.appendChild(h2);
+        books.appendChild(author);
+        books.appendChild(numPages);
+        books.setAttribute('data-attribute', myLibrary.indexOf(book));
+
+        const button = document.createElement('input');
+        button.type = "button";
+        button.value = "Remove";
+        button.onclick = function() {
+            removeBook(book);
+        };
+
+        const readStatusBtn = document.createElement('input');
+        readStatusBtn.type = "button";
+        readStatusBtn.value = book.readStatus;
+
+        if(readStatusBtn.value === "yes") {
+            readStatusBtn.classList.add('readYes');
+        } else {
+            readStatusBtn.classList.add('readNo');
+        }
+        
+        readStatusBtn.onclick = function(e) {
+            toggleReadStatus(e, book);
+        }
+        readStatus.appendChild(readStatusBtn);
+        books.appendChild(readStatus);
+        books.appendChild(button);
         booksContainer.appendChild(books);
-        console.log(myLibrary.length)
+        // console.log('index in loop: ', myLibrary.indexOf(book));
     })
 }
 
 function openForm() {
-    form.style.display = 'block';
+    formContainer.style.display = 'block';
     document.querySelector('.modal').classList.add('open');
 }
 
 function closeForm() {
-    form.style.display = "none";
+    formContainer.style.display = "none";
     document.querySelector('.modal').classList.remove('open');
 }
 
