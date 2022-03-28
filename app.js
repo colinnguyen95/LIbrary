@@ -3,24 +3,7 @@ const formContainer = document.querySelector('.popupForm-container');
 const form = document.querySelector('.popupForm');
 
 let myLibrary = [
-    {
-        title: "The Hobbit",
-        author: "J.R.R. Tolkien",
-        numPages: 295,
-        readStatus: 'yes'
-    },
-    {
-        title: "The Hobbit 2",
-        author: "J.R.R. Tolkien",
-        numPages: 395,
-        readStatus: 'yes'
-    },
-    {
-        title: "The Hobbit 3",
-        author: "J.R.R. Tolkien",
-        numPages: 495,
-        readStatus: 'no'
-    }
+
 ];
 
 function Book(title, author, numPages, readStatus){
@@ -28,15 +11,14 @@ function Book(title, author, numPages, readStatus){
     this.author = author;
     this.numPages = numPages;
     this.readStatus = readStatus;
-    this.info = function(){
-        let text = `<p>${title}</p> 
-                    <p>by ${author},</p>
-                    <p>${numPages} pages.</p>
-                    <p>Read Status: ${readStatus}</p>`;
-        console.log(text);
-        // let text = 'meep';
-        return text;
-    }
+    // this.info = function(){
+    //     let text = `<h1>${title}</h1> 
+    //                 <p>by ${author},</p>
+    //                 <p>${numPages} pages.</p>
+    //                 <p>Read Status: ${readStatus}</p>`;
+    //     console.log(text);
+    //     return text;
+    // }
 }
 
 function addBookToLibrary(){
@@ -46,6 +28,7 @@ function addBookToLibrary(){
     const readStatus = document.querySelector('input[name="read_status"]:checked').value;
     const newBook = new Book(title, author, numPages, readStatus);
     myLibrary.push(newBook);
+    
     loopBooks();
     closeForm();
     form.reset();
@@ -63,8 +46,6 @@ function removeBook(book) {
 function toggleReadStatus(e, book) {
     book.readStatus = book.readStatus === 'yes' ? 'no' : 'yes';
     loopBooks();
-    console.log(e);
-    console.log('toggle toggle');
 }
 
 function loopBooks(){
@@ -123,13 +104,13 @@ function closeForm() {
     document.querySelector('.modal').classList.remove('open');
 }
 
+const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 295, "yes");
+const book2 = new Book("The Hobbit 2", "J.R.R. Tolkien", 592, "yes");
+const book3 = new Book("The Hobbit 3", "J.R.R. Tolkien", 347, "no");
+
+myLibrary.push(book1);
+myLibrary.push(book2);
+myLibrary.push(book3);
+
 loopBooks();
-
-const book = new Book("The Hobbit", "J.R.R. Tolkien", 295, "not read")
-console.log(book.info());
-
-// document.addEventListener('click', function(e) {
-//     if (e.target.matches(".closeModal") || !e.target.closest('.modal')) {
-//         closeForm;
-//     }
-// }, false)
+// console.log(book.info());
