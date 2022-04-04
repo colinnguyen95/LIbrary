@@ -6,20 +6,6 @@ let myLibrary = [
 
 ];
 
-function Book(title, author, numPages, readStatus){
-    this.title = title;
-    this.author = author;
-    this.numPages = numPages;
-    this.readStatus = readStatus;
-    // this.info = function(){
-    //     let text = `<h1>${title}</h1> 
-    //                 <p>by ${author},</p>
-    //                 <p>${numPages} pages.</p>
-    //                 <p>Read Status: ${readStatus}</p>`;
-    //     console.log(text);
-    //     return text;
-    // }
-}
 class Book {
     constructor(title, author, numPages, readStatus){
         this.title = title;
